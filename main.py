@@ -13,6 +13,11 @@ FRONT_WALL_HEIGHT = math.floor(FULL_SCREEN_HEIGHT * 0.31)
 SIDE_WALL_WIDTH = math.floor(FRONT_WALL_WIDTH / 4)
 SIDE_WALL_HEIGHT = FRONT_WALL_HEIGHT
 
+# Colour constants
+FRONT_WALL_COLOUR = 'dark sea green'
+FRONT_ROOF_COLOUR = 'dark sea green'
+SIDE_ROOF_COLOUR = 'bisque4'
+
 # Setup the turtle
 t = turtle.Turtle()
 t.speed(3) # 1:slowest, 3:slow, 5:normal, 10:fast, 0:fastest
@@ -23,18 +28,21 @@ t.speed(3) # 1:slowest, 3:slow, 5:normal, 10:fast, 0:fastest
   
 # Calculate the starting point for the wall drawing.
 # We take take the decimal floor to ensure whole numbers.
-startX = math.floor(turtle.window_width() / 4)
-startY = math.floor(turtle.window_height() / 2)
+frontWallStartX = math.floor(turtle.window_width() / 4)
+frontWallStartY = math.floor(turtle.window_height() / 2)
 
 # Convert to 0 centre coordinates
-startX = startX - HALF_SCREEN_WIDTH_FLOORED
-startY = startY - HALF_SCREEN_HEIGHT_FLOORED
+frontWallStartX = frontWallStartX - HALF_SCREEN_WIDTH_FLOORED
+frontWallStartY = frontWallStartY - HALF_SCREEN_HEIGHT_FLOORED
 
 # Move turtle to wall starting point.
 t.up()
-t.goto(startX, startY)
+t.goto(frontWallStartX, frontWallStartY)
 
 # Draw front wall
+t.fillcolor(FRONT_WALL_COLOUR)
+t.begin_fill()
+
 t.down()
 t.forward(FRONT_WALL_WIDTH)
 
@@ -46,13 +54,18 @@ t.forward(FRONT_WALL_WIDTH)
 
 t.right(90)
 t.forward(FRONT_WALL_HEIGHT)
+
+t.end_fill()
 
 # Draw side wall
 t.up()
 t.right(90)
+
 t.forward(FRONT_WALL_WIDTH)
 
 t.down()
+
+t.begin_fill()
 t.left(45)
 t.forward(SIDE_WALL_WIDTH)
 
@@ -64,6 +77,11 @@ t.forward(SIDE_WALL_HEIGHT)
 
 t.right(45)
 t.forward(SIDE_WALL_WIDTH)
+
+t.right(135)
+t.forward(SIDE_WALL_HEIGHT)
+
+t.end_fill()
 
 #########################################################
 # DRAW ROOF
@@ -88,31 +106,35 @@ roofHeight = math.floor(FULL_SCREEN_HEIGHT * 0.4)
 
 # Move turtle to wall starting point.
 t.up()
-t.goto(frontRoofMiddleX, startY)
+t.goto(frontRoofMiddleX, frontRoofStartY)
 t.setheading(90)
 
 t.forward(roofHeight)
 topOfRoofX = t.xcor()
 topOfRoofY = t.ycor()
 
-# We draw the roof as two right angled triangles next to each other.
+# Draw the front of the roof.
+t.begin_fill()
+t.fillcolor(FRONT_ROOF_COLOUR)
 
-# Draw left side of roof.
 t.down()
-t.goto(frontRoofStartX, startY)
-
-# Draw right side of roof.
-t.up()
+t.goto(frontRoofStartX, frontRoofStartY)
+t.goto(frontRoofEndX, frontRoofStartY)
 t.goto(topOfRoofX, topOfRoofY)
-t.down()
-t.goto(frontRoofEndX, startY)
 
-t.up()
-t.goto(topOfRoofX, topOfRoofY)
+t.end_fill()
+
+# Draw side roof
+t.fillcolor(SIDE_ROOF_COLOUR)
+t.begin_fill()
+
 t.setheading(45)
-t.down()
 t.forward(SIDE_WALL_WIDTH)
 
 t.goto(roofSideEndX, roofSideEndY)
+t.goto(frontRoofEndX, frontRoofStartY)
+t.goto(topOfRoofX, topOfRoofY)
+t.end_fill()
+
 
 turtle.exitonclick()
